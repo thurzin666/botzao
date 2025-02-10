@@ -222,12 +222,10 @@
             const randomChance = Math.random();
 
             let odd = '';
-            let riskMessage = '';
 
             // 10% de chance de gerar uma odd rosa
             if (randomChance <= 0.10) {
                 odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
-                riskMessage = 'Arriscado operar!';
             }
             // 25% de chance de gerar uma odd azul
             else if (randomChance <= 0.35) {
@@ -240,10 +238,9 @@
             // Caso contrário, a odd vai para um valor acima de 10.00 (rosa)
             else {
                 odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
-                riskMessage = 'Arriscado operar!';
             }
 
-            return { odd, riskMessage };
+            return { odd };
         }
 
         // Função para determinar a cor da odd
@@ -268,10 +265,10 @@
             loadingText.style.display = 'block';
 
             setTimeout(() => {
-                const { odd, riskMessage } = generateRandomOdd();
+                const { odd } = generateRandomOdd();
                 const oddColor = determineOddColor(parseFloat(odd));
 
-                oddResult.innerHTML = `Odd Possível: <strong>${odd}X</strong><br>${riskMessage}`;
+                oddResult.innerHTML = `Odd Possível: <strong>${odd}X</strong>`;
                 oddResult.style.backgroundColor = oddColor;  // Altera a cor de fundo da odd gerada
                 oddResult.style.display = 'block';
 
