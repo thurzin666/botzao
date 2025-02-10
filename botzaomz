@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviator Betting Bot</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #2a2a2a, #0d0d0d);
+            color: white;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            text-align: center;
+            overflow: hidden;
+            transition: background-color 0.5s ease;
+        }
+
+        h1 {
+            font-size: 3rem;
+            color: #8000ff;
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-out;
+            text-shadow: 0 0 10px #8000ff, 0 0 20px #8000ff, 0 0 30px #8000ff; /* Neon effect */
+        }
+
+        .container {
+            background: rgba(0, 0, 0, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .logo {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .odd-result {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            color: white;
+            display: none;
+            animation: fadeIn 1s ease-out;
+            text-shadow: 0 0 10px rgba(128, 0, 255, 0.8); /* Neon effect */
+        }
+
+        .risk-management {
+            font-size: 1rem;
+            margin-top: 20px;
+            color: #ff0055;
+            text-shadow: 0 0 10px rgba(255, 0, 85, 0.8); /* Neon red effect */
+        }
+
+        button {
+            background-color: #8000ff;
+            color: white;
+            font-size: 1.2rem;
+            padding: 18px 36px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+            box-shadow: 0 0 15px rgba(128, 0, 255, 0.7); /* Neon glow effect */
+        }
+
+        button:hover {
+            background-color: #9c1aff;
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(128, 0, 255, 1); /* Neon glow increase */
+        }
+
+        .faq {
+            background-color: #222;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            max-width: 600px;
+            width: 100%;
+            font-size: 1rem;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .faq h2 {
+            font-size: 1.5rem;
+            color: #8000ff;
+            text-shadow: 0 0 10px #8000ff, 0 0 20px #8000ff; /* Neon effect */
+        }
+
+        .faq p {
+            color: #fff;
+            margin-top: 10px;
+        }
+
+        .faq p strong {
+            color: #ff0055;
+        }
+
+        .faq ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .faq ul li {
+            margin-top: 10px;
+        }
+
+        .loader {
+            display: none;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #8000ff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin-top: 30px;
+        }
+
+        .loading-text {
+            font-size: 1.2rem;
+            color: white;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <img src="https://www.placard.co.mz/content/placard-p2ac3r/uploads/2022/11/cropped-favicon-placard.jpg" alt="Logo" class="logo">
+
+        <h1>Aviator Betting Bot</h1>
+        <p>Clique no botão abaixo para gerar as odds possíveis.</p>
+
+        <button id="generateOddBtn">Gerar Odd</button>
+
+        <div class="loader" id="loader"></div>
+        <div class="loading-text" id="loadingText" style="display: none;">Analisando gráfico na Placard...</div>
+
+        <div class="odd-result" id="oddResult"></div>
+
+        <p class="risk-management">Lembre-se: Aposte com responsabilidade, nunca arrisque mais do que pode perder.</p>
+
+        <button id="faqBtn">Perguntas Frequentes</button>
+
+        <div class="faq" id="faqSection">
+            <h2>Perguntas Frequentes (FAQ)</h2>
+            <ul>
+                <li>
+                    <strong>Como posso gerar uma odd?</strong>
+                    <p>Para gerar uma odd, basta clicar no botão <strong>"Gerar Odd"</strong> abaixo. O bot irá gerar odds possíveis com base nas condições atuais.</p>
+                </li>
+                <li>
+                    <strong>O que significa a cor da odd?</strong>
+                    <p>A cor da odd gerada varia de acordo com seu valor:</p>
+                    <ul>
+                        <li><strong>Azul:</strong> Odds entre 1.00X e 1.99X</li>
+                        <li><strong>Roxa:</strong> Odds entre 2.00X e 9.99X</li>
+                        <li><strong>Rosa:</strong> Odds acima de 10.00X</li>
+                    </ul>
+                </li>
+                <li>
+                    <strong>Posso gerar uma nova odd a qualquer momento?</strong>
+                    <p>Sim! Basta clicar novamente no botão <strong>"Gerar Odd"</strong> para gerar uma nova odd sempre que desejar.</p>
+                </li>
+                <li>
+                    <strong>Qual é a faixa de odds geradas?</strong>
+                    <p>As odds geradas podem variar de 1.50X até 100.00X.</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Função para gerar a odd com probabilidades
+        function generateRandomOdd() {
+            const randomChance = Math.random();
+
+            let odd = '';
+            let riskMessage = '';
+
+            // 10% de chance de gerar uma odd rosa
+            if (randomChance <= 0.10) {
+                odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
+                riskMessage = 'Arriscado operar!';
+            }
+            // 25% de chance de gerar uma odd azul
+            else if (randomChance <= 0.35) {
+                odd = (Math.random() * (1.99 - 1) + 1).toFixed(2);  // Gera uma odd entre 1.00 e 1.99
+            }
+            // 50% de chance de gerar uma odd roxa
+            else if (randomChance <= 0.85) {
+                odd = (Math.random() * (9.99 - 2) + 2).toFixed(2);  // Gera uma odd entre 2.00 e 9.99
+            }
+            // Caso contrário, a odd vai para um valor acima de 10.00 (rosa)
+            else {
+                odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
+                riskMessage = 'Arriscado operar!';
+            }
+
+            return { odd, riskMessage };
+        }
+
+        // Função para determinar a cor da odd
+        function determineOddColor(odd) {
+            if (odd >= 1.00 && odd <= 1.99) {
+                return "blue";  // Azul
+            } else if (odd >= 2.00 && odd <= 9.99) {
+                return "purple";  // Roxo
+            } else {
+                return "pink";  // Rosa
+            }
+        }
+
+        // Função para exibir a odd gerada e a cor correspondente
+        function showGeneratedOdd() {
+            const loader = document.getElementById('loader');
+            const loadingText = document.getElementById('loadingText');
+            const oddResult = document.getElementById('oddResult');
+
+            // Exibir o carregamento por 6 segundos
+            loader.style.display = 'block';
+            loadingText.style.display = 'block';
+
+            setTimeout(() => {
+                const { odd, riskMessage } = generateRandomOdd();
+                const oddColor = determineOddColor(parseFloat(odd));
+
+                oddResult.innerHTML = `Odd Possível: <strong>${odd}X</strong><br>${riskMessage}`;
+                oddResult.style.backgroundColor = oddColor;  // Altera a cor de fundo da odd gerada
+                oddResult.style.display = 'block';
+
+                loader.style.display = 'none'; // Oculta o carregamento após 6 segundos
+                loadingText.style.display = 'none'; // Oculta o texto de carregamento
+            }, 6000);
+        }
+
+        // Função para exibir a seção FAQ
+        function toggleFAQ() {
+            const faqSection = document.getElementById('faqSection');
+            faqSection.style.display = faqSection.style.display === 'block' ? 'none' : 'block'; // Alterna entre mostrar e esconder
+        }
+
+        // Configurando os botões para gerar a odd e abrir a FAQ
+        document.getElementById('generateOddBtn').addEventListener('click', showGeneratedOdd);
+        document.getElementById('faqBtn').addEventListener('click', toggleFAQ);
+    </script>
+
+</body>
+</html>
