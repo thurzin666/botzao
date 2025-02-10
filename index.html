@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #2a2a2a, #0d0d0d);
+            background: linear-gradient(135deg, #1f1f1f, #4c4c4c);
             color: white;
             height: 100vh;
             display: flex;
@@ -27,10 +27,10 @@
 
         h1 {
             font-size: 3rem;
-            color: #8000ff;
+            color: #fff;
             margin-bottom: 30px;
             animation: fadeIn 1s ease-out;
-            text-shadow: 0 0 10px #8000ff, 0 0 20px #8000ff, 0 0 30px #8000ff; /* Neon effect */
+            text-shadow: 0 0 15px #8000ff, 0 0 30px #8000ff; /* Neon effect */
         }
 
         .container {
@@ -38,9 +38,15 @@
             border-radius: 20px;
             padding: 40px;
             width: 90%;
-            max-width: 500px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
-            animation: slideIn 0.5s ease-out;
+            max-width: 550px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: slideIn 0.6s ease-out;
+            transition: all 0.3s ease;
+        }
+
+        .container:hover {
+            transform: scale(1.05);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
         }
 
         .logo {
@@ -85,7 +91,19 @@
         button:hover {
             background-color: #9c1aff;
             transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(128, 0, 255, 1); /* Neon glow increase */
+            box-shadow: 0 0 30px rgba(128, 0, 255, 1); /* Neon glow increase */
+        }
+
+        .faq-link {
+            font-size: 1rem;
+            margin-top: 20px;
+            color: #00ffcc;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .faq-link:hover {
+            color: #ff0099;
         }
 
         .faq {
@@ -186,6 +204,8 @@
 
         <p class="risk-management">Lembre-se: Aposte com responsabilidade, nunca arrisque mais do que pode perder.</p>
 
+        <a href="https://www.placard.co.mz/register-short/?btag=660359_6c2200241bb643fda34e92970c76a3f3" class="faq-link" target="_blank">Não tem conta na Placard? Crie agora</a>
+
         <button id="faqBtn">Perguntas Frequentes</button>
 
         <div class="faq" id="faqSection">
@@ -227,17 +247,13 @@
             if (randomChance <= 0.10) {
                 odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
             }
-            // 25% de chance de gerar uma odd azul
-            else if (randomChance <= 0.35) {
+            // 45% de chance de gerar uma odd azul
+            else if (randomChance <= 0.55) {
                 odd = (Math.random() * (1.99 - 1) + 1).toFixed(2);  // Gera uma odd entre 1.00 e 1.99
             }
-            // 50% de chance de gerar uma odd roxa
-            else if (randomChance <= 0.85) {
-                odd = (Math.random() * (9.99 - 2) + 2).toFixed(2);  // Gera uma odd entre 2.00 e 9.99
-            }
-            // Caso contrário, a odd vai para um valor acima de 10.00 (rosa)
+            // 45% de chance de gerar uma odd roxa
             else {
-                odd = (Math.random() * (100 - 10) + 10).toFixed(2);  // Gera uma odd acima de 10.00
+                odd = (Math.random() * (9.99 - 2) + 2).toFixed(2);  // Gera uma odd entre 2.00 e 9.99
             }
 
             return { odd };
@@ -274,7 +290,7 @@
 
                 loader.style.display = 'none'; // Oculta o carregamento após 6 segundos
                 loadingText.style.display = 'none'; // Oculta o texto de carregamento
-            }, 6000);
+            }, 3000);  // 3 segundos de carregamento
         }
 
         // Função para exibir a seção FAQ
